@@ -28,13 +28,15 @@ public class SeparatorCollectionViewFlowLayout: UICollectionViewLeftAlignedLayou
     private static let bottomSeparatorKind = "SeparatorCollectionViewFlowLayout.Bottom"
     private static let leftSeparatorKind = "SeparatorCollectionViewFlowLayout.Left"
     private static let rightSeparatorKind = "SeparatorCollectionViewFlowLayout.Right"
+    private var totalItems:Int = 0
     
     private static let separatorKinds = [leftSeparatorKind, rightSeparatorKind, topSeparatorKind,
                                          bottomSeparatorKind]
     
-    public init(separatorWidth: CGFloat = 1, separatorColor: UIColor = UIColor.lightGray) {
+    public init(separatorWidth: CGFloat = 1, separatorColor: UIColor = UIColor.lightGray, totalItems:Int) {
         self.separatorWidth = separatorWidth
         self.separatorColor = separatorColor
+        self.totalItems = totalItems
         super.init()
     }
     
@@ -81,24 +83,28 @@ public class SeparatorCollectionViewFlowLayout: UICollectionViewLeftAlignedLayou
         switch elementKind {
         case SeparatorCollectionViewFlowLayout.rightSeparatorKind:
             if (indexPath.row % 2 == 0){
-            layoutAttributes.frame = CGRect(x: frame.maxX,
-                                            y: frame.minY - separatorWidth, width: separatorWidth,
-                                            height: frame.height + separatorWidth * 2)
+                layoutAttributes.frame = CGRect(x: frame.maxX,
+                                                y: frame.minY - separatorWidth, width: separatorWidth,
+                                                height: frame.height + separatorWidth * 2)
             }else{
                 break
             }
-//        case SeparatorCollectionViewFlowLayout.leftSeparatorKind:
-//            layoutAttributes.frame = CGRect(x: frame.minX - separatorWidth,
-//                                            y: frame.minY - separatorWidth, width: separatorWidth,
-//                                            height: frame.height + separatorWidth * 2)
-//        case SeparatorCollectionViewFlowLayout.topSeparatorKind:
-//            layoutAttributes.frame = CGRect(x: frame.minX,
-//                                            y: frame.minY - separatorWidth, width: frame.width,
-//                                            height: separatorWidth)
+            //        case SeparatorCollectionViewFlowLayout.leftSeparatorKind:
+            //            layoutAttributes.frame = CGRect(x: frame.minX - separatorWidth,
+            //                                            y: frame.minY - separatorWidth, width: separatorWidth,
+            //                                            height: frame.height + separatorWidth * 2)
+            //        case SeparatorCollectionViewFlowLayout.topSeparatorKind:
+            //            layoutAttributes.frame = CGRect(x: frame.minX,
+            //                                            y: frame.minY - separatorWidth, width: frame.width,
+        //                                            height: separatorWidth)
         case SeparatorCollectionViewFlowLayout.bottomSeparatorKind:
-            layoutAttributes.frame = CGRect(x: frame.minX,
-                                            y: frame.maxY, width: frame.width,
-                                            height: separatorWidth)
+            if (indexPath.row < self.totalItems - 1){
+                layoutAttributes.frame = CGRect(x: frame.minX,
+                                                y: frame.maxY, width: frame.width,
+                                                height: separatorWidth)
+            }else{
+                break
+            }
         default:
             break
         }
